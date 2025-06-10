@@ -1,12 +1,25 @@
 from flask import Flask, jsonify, request
 import requests
+from conection.sqlserver import  conection_accounts, conection_userprofile
 
 app = Flask(__name__)
 
-@app.route("/create_account", methods=["GET"])
+@app.route("/create_account", methods=["GET","POST"])
 def create_account():
-    
-    return jsonify({'error': 'No se pudo obtener el clima'})
+    con = conection_accounts()
+    cursor = con.cursor()
+
+    sql = "INSERT INTO Profile (Name, Lastname, User_mail, Password, Status) VALUES (%s, %s, %s, %s, %s)"
+    valores = ("Allan", "Correa", "AllanC2002", "1234", 1)
+
+    cursor.execute(sql, valores)
+    con.commit()
+
+    print(f"{cursor.rowcount} accounts registered.")
+    cursor.close()
+    con.close()
+
+    return jsonify({"accounts": cursor.rowcount})
 
 
 

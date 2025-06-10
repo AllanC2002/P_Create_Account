@@ -1,28 +1,29 @@
 # database Accounts
 from dotenv import load_dotenv
 import os
+import pyodbc
 
 load_dotenv()
 
 # database Accounts
 def conection_accounts():
-    Db_ip=os.getenv("dbu_hostip")
-    Db_port=os.getenv("dbu_port")
-    Db_user=os.getenv("dbu_user")
-    Db_password=os.getenv("dbu_password")
-    Db_name=os.getenv("dbu_namedb")
-
-    
-
-    return
+    con=pyodbc.connect(
+        f"DRIVER={{ODBC Driver 17 for SQL Server}};"
+        f"SERVER={os.getenv('Dba_hostip')},{os.getenv('Dba_port')};"
+        f"DATABASE={os.getenv('Dba_namedb')};"
+        f"UID={os.getenv('Dba_user')};"
+        f"PWD={os.getenv('Dba_password')}"
+    )
+    return con
 
 # database Userprofile
 def conection_userprofile():
-    Db_ip=os.getenv("dba_hostip")
-    Db_port=os.getenv("dba_port")
-    Db_user=os.getenv("dba_user")
-    Db_password=os.getenv("dba_password")
-    Db_name=os.getenv("dba_namedb")
-    return
-
+    con=pyodbc.connect(
+        f"DRIVER={{ODBC Driver 17 for SQL Server}};"
+        f"SERVER={os.getenv('Dbu_hostip')},{os.getenv('Dbu_port')};"
+        f"DATABASE={os.getenv('Dbu_namedb')};"
+        f"UID={os.getenv('Dbu_user')};"
+        f"PWD={os.getenv('Dbu_password')}"
+    )
+    return con
 
