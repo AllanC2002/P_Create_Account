@@ -1,58 +1,61 @@
 from flask import Flask, request, jsonify
 from conection.mysql import conection_accounts, conection_userprofile
+from models import User, Profile, Type, Preference
+
 
 app = Flask(__name__)
 
+
 @app.route("/create_account", methods=["GET", "POST"])
 def create_account():
-    cona = conection_accounts()
-    cursor = cona.cursor()
+    # 1. Insert Users (DB accounts)
+    session_accounts = conection_accounts()
 
-    sql = "INSERT INTO Users (Name, Lastname, User_mail, Password, Status) VALUES (%s, %s, %s, %s, %s)"
-    valores = ("Allan", "Correa", "Test15", "1234", 1)
-    cursor.execute(sql, valores)
-    cona.commit()
-    # 2. Obtener el ID generado
-    user_id = cursor.lastrowid
+    nuevo_usuario = User(
+        Name="Allan",
+        Lastname="Correa",
+        User_mail="Test15",
+        Password=("1234"),  # contraseña encriptada aquí
+        Status=1
+    )
+    session_accounts.add(nuevo_usuario)
+    session_accounts.commit()
+    session_accounts.refresh(nuevo_usuario)  # obtener el ID
 
-    # 3. Recuperar el usuario insertado
-    cursor.execute("SELECT * FROM Users WHERE Id_User = %s", (user_id,))
-    usuario = cursor.fetchone()
+    user_id = nuevo_usuario.Id_User
 
-    rowcount = cursor.rowcount
-    # 4. Mostrar resultados
-    print("Datos del usuario insertado en la database accounts:")
-    print(usuario)
+    # 2. Insertar en Profile (DB userprofile)
+    session_userprofile = conection_userprofile()
 
-    cursor.close()
-    cona.close()
+    # Obtener cualquier tipo y preferencia (ID 1, 2 por ejemplo)
+    tipo = session_userprofile.query(Type).first()
+    preferencia = session_userprofile.query(Preference).first()
 
-    conu=conection_userprofile()
-    cursoru=conu.cursor()
-    sql3= "INSERT INTO Types (Id_user,Description) VALUES (%s, %s)"
-    valores3=(f"{user_id}","Test13")
+    nuevo_perfil = Profile(
+        Id_User=user_id,
+        User_mail="Test15",
+        Name="Allan",
+        Lastname="Correa",
+        Description="Hola",
+        Id_type=1,
+        Id_preferences=1,
+        Status_account=1
+    )
+    session_userprofile.add(nuevo_perfil)
+    session_userprofile.commit()
 
-    cursoru.execute(sql3,valores3)
-    conu.commit()
+    return jsonify({
+        "accounts": {
+            "Id_User": nuevo_usuario.Id_User,
+            "Name": nuevo_usuario.Name,
+            "Lastname": nuevo_usuario.Lastname,
+            "User_mail": nuevo_usuario.User_mail
+        },
+        "userprofile": {
+            "Id_User": nuevo_perfil.Id_User,
+            "Description": nuevo_perfil.Description
+        }
+    })
 
-    sql4= "INSERT INTO Preferences (Id_user,Description) VALUES (%s, %s)"
-    valores4=(f"{user_id}","Test13")
-
-    cursoru.execute(sql4,valores4)
-    conu.commit()
-
-    sql2 = "INSERT INTO Profile (Id_user,User_mail,Name,Lastname,Description,Id_preferences,Id_type, Status_account) VALUES (%s, %s, %s, %s, %s,%s,%s,%s)"
-    valores2 = (f"{user_id}","Test15","Allan", "Correa", "Hola", 2,2, 1)
-    
-    cursoru.execute(sql2,valores2)
-    conu.commit()
-
-    cursoru.execute("SELECT * FROM Profile WHERE Id_User = %s", (user_id,))
-    usuariou = cursor.fetchone()
-
-    return jsonify({"accounts": usuario,"userprofile":usuariou})
-
-
-
-if __name__=="__main__":
+if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=8080)
