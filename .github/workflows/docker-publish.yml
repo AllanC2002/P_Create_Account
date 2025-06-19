@@ -19,7 +19,7 @@ env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: docker.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: allanc2002/ejercicio3-back
+  IMAGE_NAME: allanc2002/
 
 
 jobs:
