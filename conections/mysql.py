@@ -12,6 +12,7 @@ def conection_accounts():
     port = os.getenv("DBA_PORT")
     user = os.getenv("DBA_USER")
     password = urllib.parse.quote_plus(os.getenv("DBA_PASSWORD"))  # Escapa símbolos
+    #password = os.getenv("DBA_PASSWORD")
     dbname = os.getenv("DBA_NAME")
 
     connection_string = f"mysql+pymysql://{user}:{password}@{host}:{port}/{dbname}"
@@ -24,6 +25,7 @@ def conection_userprofile():
     port = os.getenv("DBU_PORT")
     user = os.getenv("DBU_USER")
     password = urllib.parse.quote_plus(os.getenv("DBU_PASSWORD"))  # Escapa símbolos
+    #password = os.getenv("DBU_PASSWORD")
     dbname = os.getenv("DBU_NAME")
 
     connection_string = f"mysql+pymysql://{user}:{password}@{host}:{port}/{dbname}"

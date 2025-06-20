@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 from services.funtions import create_user
-
 app = Flask(__name__)
 
 @app.route("/create_account", methods=["POST"])
