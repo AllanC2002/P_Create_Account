@@ -1,6 +1,6 @@
 from flask import jsonify
-from conection.mysql import conection_accounts, conection_userprofile
-from models import User, Profile
+from conections.mysql import conection_accounts, conection_userprofile
+from models.models import User, Profile
 import hashlib
 from sqlalchemy.exc import IntegrityError
 
