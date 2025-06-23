@@ -54,7 +54,7 @@ def create_user(data):
         session_userprofile.commit()
 
         # Microservice defalut-photo
-        photo_url = os.getenv("DEFAULT_PHOTO_URL", "http://localhost:8081/default-photo")
+        photo_url = os.getenv("DEFAULT_PHOTO_URL", "http://107.21.24.33:8080/default-photo")
 
         
         try:
