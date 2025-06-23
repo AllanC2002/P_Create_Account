@@ -1,11 +1,11 @@
 import requests
 
-url = "http://127.0.0.1:8080/create_account"
+url = "http://3.212.156.160:8080/create_account"
 
 data = {
-    "Name": "test1",
-    "Lastname": "testeo2",
-    "User_mail": "leloor",
+    "Name": "ec2",
+    "Lastname": "ec2",
+    "User_mail": "ec2",
     "Password": "1234",
     "Id_type": 1,
     "Id_preferences": 1
