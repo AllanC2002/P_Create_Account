@@ -73,7 +73,7 @@ jobs:
 
     services:
       create_user_api:
-        image: docker.io/allanc2002/p_create_user:qa:qa
+        image: docker.io/allanc2002/p_create_user:qa
         ports:
           - 8080:8080
         env:
