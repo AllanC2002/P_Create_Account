@@ -1,7 +1,10 @@
 # tests/test_create_account.py
 import pytest
 from unittest.mock import patch, MagicMock
-from main import app  # Asegúrate de que este import funcione
+#import sys
+#import os
+#sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from main import app 
 
 @pytest.fixture
 def client():
